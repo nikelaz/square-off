@@ -28,7 +28,7 @@ module.exports = {
           config: './webpack.renderer.config.js',
           entryPoints: [
             {
-              html: './src/index.html',
+              html: './src/views/index.html',
               js: './src/renderer.js',
               name: 'main_window',
               preload: {
