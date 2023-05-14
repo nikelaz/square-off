@@ -1,29 +1,14 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import Index from './routes/index.jsx';
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { RouterProvider } from "react-router-dom";
+import router from './router';
+import './styles/index.styl';
 
-const router = createBrowserRouter([
-  {
-    path: '/main_window',
-    element: <Index />
-  },
-  {
-    path: '/test',
-    element: <div>Test route</div>
-  }
-]);
+const rootElement = document.getElementById('root');
+const root = ReactDOM.createRoot(rootElement);
 
-function render() {
-  ReactDOM.render(
-    <React.StrictMode>
-      <RouterProvider router={router} />
-    </React.StrictMode>,
-    document.getElementById('root')
-  );
-}
-
-render();
+root.render(
+  <React.StrictMode>
+    <RouterProvider router={router} />
+  </React.StrictMode>,
+);

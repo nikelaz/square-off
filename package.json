@@ -30,8 +30,12 @@
     "babel-loader": "^9.1.2",
     "css-loader": "^6.7.3",
     "electron": "24.3.0",
+    "file-loader": "^6.2.0",
+    "mini-css-extract-plugin": "^2.7.5",
     "node-loader": "^2.0.0",
-    "style-loader": "^3.3.2"
+    "style-loader": "^3.3.2",
+    "stylus": "^0.59.0",
+    "stylus-loader": "^7.1.0"
   },
   "dependencies": {
     "electron-squirrel-startup": "^1.0.0",
