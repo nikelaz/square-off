@@ -1,0 +1,19 @@
+Backgrounds = "bg"    #181818,
+              "bg-a1" #1b1b1b,
+              "bg-a2" #1e1e1e,
+              "bg-a3" #212121,
+              "bg-a4" #242424,
+              "bg-a5" #272727,
+              "bg-a6" #2a2a2a
+
+Foregrounds = "fg"    #fff,
+              "fg-a9" alpha(#fff, .9),
+              "fg-a8" alpha(#fff, .8)
+
+for i in Backgrounds
+  .{i[0]}
+    background-color: i[1]
+
+for i in Foregrounds
+  .{i[0]}
+    color: i[1]
