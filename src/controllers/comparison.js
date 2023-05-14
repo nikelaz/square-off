@@ -22,18 +22,18 @@ class ComparisonController {
     const refPage = new Page();
     await refPage.open(refPageUrl);
 
-    event.reply(replyUrl, { progress: 25 });
+    event.reply(replyUrl, { progress: 20 });
     
     const compPage = new Page();
     await compPage.open(compPageUrl);
 
-    event.reply(replyUrl, { progress: 50 });
+    event.reply(replyUrl, { progress: 40 });
 
     const refScreenshot = new Screenshot(refPage.instance, 1981, './tmp/ref.png');
     await refScreenshot.capture();
 
     event.reply(replyUrl, {
-      progress: 75,
+      progress: 60,
       refImage: refScreenshot.getBase64()
     });
 
@@ -41,17 +41,15 @@ class ComparisonController {
     await compScreenshot.capture();
 
     event.reply(replyUrl, {
-      progress: 75,
+      progress: 80,
       compImage: compScreenshot.getBase64()
     });
 
     const diffImage = new VisualDiff(refScreenshot, compScreenshot);
     event.reply(replyUrl, {
-      progress: 75,
+      progress: 100,
       diffImage: diffImage.getBase64()
     });
-
-    event.reply(replyUrl, { progress: 100 });
   }
 }
 

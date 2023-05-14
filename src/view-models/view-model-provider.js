@@ -14,9 +14,9 @@ export const ViewModelProvider = ({ children }) => {
     const data = Object.fromEntries(formData);
 
     const ipcRenderer = window.ipcRenderer;
-  
+
     ipcRenderer.on('ComparisonController-compareUrls-reply', updateStatusOnReply);
-    
+
     setProgress(1);
     ipcRenderer.send('ComparisonController-compareUrls', data);
   };
