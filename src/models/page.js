@@ -5,6 +5,7 @@ class Page {
     const browser = await BrowserSingleton.getInstance();
     this.instance = await browser.newPage();
     await this.instance.goto(url);
+    await this.instance.setViewport({ width: 1981, height: 1024 });
   }
 }
 

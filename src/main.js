@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, session } = require('electron');
 const ComparisonController = require('./controllers/comparison');
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -33,6 +33,25 @@ const initControllers = () => {
 // Some APIs can only be used after this event occurs.
 app.on('ready', createWindow);
 app.on('ready', initControllers);
+app.on('ready', () => {
+  session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+    callback({
+      responseHeaders: {
+        ...details.responseHeaders,
+        'Content-Security-Policy': [
+          `default-src *  data: blob: filesystem: about: ws: wss: 'unsafe-inline' 'unsafe-eval' 'unsafe-dynamic'; 
+          script-src * data: blob: 'unsafe-inline' 'unsafe-eval'; 
+          connect-src * data: blob: 'unsafe-inline'; 
+          img-src * data: blob: 'unsafe-inline'; 
+          frame-src * data: blob: ; 
+          style-src * data: blob: 'unsafe-inline';
+          font-src * data: blob: 'unsafe-inline';
+          frame-ancestors * data: blob: 'unsafe-inline';
+        `]
+      }
+    })
+  })
+})
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
