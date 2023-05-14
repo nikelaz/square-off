@@ -1,4 +1,5 @@
 const { app, BrowserWindow } = require('electron');
+const ComparisonController = require('./controllers/comparison');
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -19,12 +20,19 @@ const createWindow = () => {
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
   mainWindow.maximize();
+
+  mainWindow.openDevTools();
+};
+
+const initControllers = () => {
+  new ComparisonController();
 };
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', createWindow);
+app.on('ready', initControllers);
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
@@ -42,3 +50,5 @@ app.on('activate', () => {
     createWindow();
   }
 });
+
+

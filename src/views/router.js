@@ -1,15 +1,20 @@
 import React from 'react';
-import { createBrowserRouter } from 'react-router-dom';
+import { createMemoryRouter } from 'react-router-dom';
 import Index from './routes/index.jsx';
+import Visual from './routes/visual.jsx';
 
-const router = createBrowserRouter([
+const router = createMemoryRouter([
+  {
+    path: '/',
+    element: <Index />
+  },
   {
     path: '/main_window',
     element: <Index />
   },
   {
-    path: '/test',
-    element: <div>Test route</div>
+    path: '/code',
+    element: <Visual />
   }
 ]);
 

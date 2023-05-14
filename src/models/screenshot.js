@@ -1,10 +1,10 @@
 const fs = require('fs');
 
 class Screenshot {
-  constructor(page, width, filePath) {
+  constructor(page, width) {
     this.page = page;
     this.width = width;
-    this.filePath = filePath;
+    this.base64 = null;
   }
 
   async capture() {
@@ -12,19 +12,14 @@ class Screenshot {
     await this.page.setViewport({ width: this.width, height: 1024 });
     
     // Create Screenshot
-    await this.page.screenshot({
-      path: this.filePath,
+    this.base64 = await this.page.screenshot({
       fullPage: true,
+      encoding: 'base64'
     });
   }
 
-  removeFile() {
-    return new Promise((resolve, reject) => {
-      fs.unlink(this.filePath, error => {
-        if (error) reject(error);
-        resolve();
-      });
-    });
+  getBase64() {
+    return this.base64;
   }
 }
 

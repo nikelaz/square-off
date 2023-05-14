@@ -1,9 +1,14 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import MainLayout from '../layouts/main-layout.jsx';
 
-const Index = () => (
-  <div>Index Route
-  <Link to="/test">Test Route</Link></div>
-);
+const Index = () => {
+  return (
+    <MainLayout>
+      <div className="container">
+        <h1>Index</h1>
+      </div>
+    </MainLayout>
+  );
+};
 
 export default Index;

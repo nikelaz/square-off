@@ -3,26 +3,22 @@ const pixelmatch = require('pixelmatch');
 const PNG = require('pngjs').PNG;
 
 class VisualDiff {
-  constructor(refImagePath, compImagePath, diffImagePath) {
-    this.refImagePath = refImagePath;
-    this.compImagePath = compImagePath;
-    this.diffImagePath = diffImagePath;
+  constructor(refScreenshot, compScreenshot) {
+    this.refScreenshot = refScreenshot;
+    this.compScreenshot = compScreenshot;
 
-    this.refImage = this.readImage(this.refImagePath);
-    this.compImage = this.readImage(this.compImagePath);
+    this.refImage = this.parseImage(this.refScreenshot.base64);
+    this.compImage = this.parseImage(this.compScreenshot.base64);
 
     this.width = this.refImage.width;
     this.height = this.refImage.height;
 
     this.createDiff();
-
-    if (diffImagePath) {
-      this.saveDiffImage(diffImagePath);
-    }
   }
 
-  readImage(imagePath) {
-    return PNG.sync.read(fs.readFileSync(imagePath));
+  parseImage(imageData) {
+    const imageBuffer = Buffer.from(imageData, 'base64');
+    return PNG.sync.read(imageBuffer);
   }
 
   createDiff() {
@@ -39,12 +35,13 @@ class VisualDiff {
       this.height
     );
 
-    return this.diff;
+    this.base64 = PNG.sync.write(this.diff).toString('base64');
+    return this.base64;
   }
 
-  saveDiffImage(filePath) {
-    fs.writeFileSync(filePath, PNG.sync.write(this.diff));
+  getBase64() {
+    return this.base64;
   }
 }
 
-new VisualDiff('./screenshot.png', './screenshot-uat.png', './dff-2.png');
+module.exports = VisualDiff;

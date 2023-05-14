@@ -1,0 +1,36 @@
+.top_bar
+  border-bottom: 1px solid var(--color-bg-a4)
+
+.navigation
+  a
+    display: inline-flex
+    padding: 0.75rem 1.25rem
+    border-right: 1px solid var(--color-bg-a4)
+    transition: .2s background-color
+    position: relative
+    color: var(--color-fg)
+    &:hover
+      background-color: var(--color-bg-a2)
+    &:not(first-of-type)
+      border-left: 1px solid var(--color-bg-a4)
+
+.is_active
+  cursor: default
+  background-color: var(--color-bg)
+  &:hover
+    background-color: var(--color-bg) !important
+  &:before,
+  &:after
+    content: ''
+    position: absolute
+    top: 0
+    right: 0
+    bottom: -1px
+    left: 0
+  
+  &:before
+    border-top: 2px solid var(--color-link)
+
+  &:after
+    border-bottom: 1px solid var(--color-bg)
+  
