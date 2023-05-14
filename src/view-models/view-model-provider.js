@@ -9,6 +9,7 @@ export const ViewModelProvider = ({ children }) => {
   const [diffImage, setDiffImage] = useState(null);
   const [refPageSource, setRefPageSource] = useState('');
   const [compPageSource, setCompPageSource] = useState('');
+  const [statusMessage, setStatusMessage] = useState('');
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -30,6 +31,7 @@ export const ViewModelProvider = ({ children }) => {
     if (args.diffImage) setDiffImage(args.diffImage);
     if (args.refPageSource) setRefPageSource(args.refPageSource);
     if (args.compPageSource) setCompPageSource(args.compPageSource);
+    if (args.statusMessage) setStatusMessage(args.statusMessage);
   };
 
   const model = {
@@ -39,6 +41,7 @@ export const ViewModelProvider = ({ children }) => {
     diffImage,
     refPageSource,
     compPageSource,
+    statusMessage,
     submitHandler
   };
 

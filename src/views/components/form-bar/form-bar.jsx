@@ -25,7 +25,8 @@ const FormBar = () => {
         
         <ConditionalRenderer condition={model.progress && model.progress !== 100}>
           <Modal>
-            <ProgressBar value={model.progress} />
+            <ProgressBar value={model.progress} className="mb-1" />
+            <div>{model.statusMessage}...</div>
           </Modal>
         </ConditionalRenderer>
       </form>

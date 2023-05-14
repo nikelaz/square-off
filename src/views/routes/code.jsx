@@ -3,7 +3,7 @@ import MainLayout from '../layouts/main-layout.jsx';
 import { DiffEditor } from "@monaco-editor/react";
 import { useViewModel } from '../../view-models/view-model-provider.js';
 
-const Index = () => {
+const Code = () => {
   const model = useViewModel();
 
   return (
@@ -20,4 +20,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default Code;

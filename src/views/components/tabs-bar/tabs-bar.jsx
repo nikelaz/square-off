@@ -11,7 +11,8 @@ const TabsBar = () => (
 TabsBar.Navigation = () => (
   <nav className={styles.navigation}>
     <Link to="/" activeClass={styles.is_active}>Code</Link>
-    <Link to="/code" activeClass={styles.is_active}>Visual</Link>
+    <Link to="/visual" activeClass={styles.is_active}>Visual</Link>
+    <Link to="/settings" activeClass={styles.is_active}>Settings</Link>
   </nav>
 );
 

@@ -22,12 +22,20 @@ class ComparisonController {
       throw new Error('Reference and comparison page URLs are required.');
     }
 
+    event.reply(replyUrl, {
+      progress: 5,
+      statusMessage: 'Loading reference page'
+    });
+
     const refPage = new Page();
     await refPage.open(refPageUrl);
     const refPageHeight = await refPage.instance.evaluate(() => document.documentElement.offsetHeight);
     refPage.instance.setViewport({ width: 1981, height: refPageHeight });
 
-    event.reply(replyUrl, { progress: 15 });
+    event.reply(replyUrl, {
+      progress: 15,
+      statusMessage: 'Creating reference page screenshot'
+    });
 
     const refScreenshot = new Screenshot(refPage.instance, 1981, refPageHeight);
     await refScreenshot.capture();
@@ -37,27 +45,33 @@ class ComparisonController {
 
     event.reply(replyUrl, {
       progress: 30,
-      refImage: refScreenshot.getBase64()
+      refImage: refScreenshot.getBase64(),
+      statusMessage: 'Loading comparison page'
     });
 
     const compPage = new Page();
     await compPage.open(compPageUrl);
 
-    event.reply(replyUrl, { progress: 45 });
+    event.reply(replyUrl, {
+      progress: 45,
+      statusMessage: 'Creating comparison page screenshot'
+    });
 
     const compScreenshot = new Screenshot(compPage.instance, refImagePNG.width, refImagePNG.height);
     await compScreenshot.capture();
 
     event.reply(replyUrl, {
       progress: 60,
-      compImage: compScreenshot.getBase64()
+      compImage: compScreenshot.getBase64(),
+      statusMessage: 'Computing visual differences'
     });
 
     const diffImage = new VisualDiff(refScreenshot, compScreenshot);
 
     event.reply(replyUrl, {
       progress: 75,
-      diffImage: diffImage.getBase64()
+      diffImage: diffImage.getBase64(),
+      statusMessage: 'Fetching and beautifying reference page source code'
     });
 
     const refPageSourceInstance = new PageSource(refPage.instance);
@@ -65,7 +79,8 @@ class ComparisonController {
 
     event.reply(replyUrl, {
       progress: 80,
-      refPageSource
+      refPageSource,
+      statusMessage: 'Fetching and beautifying comparison page source code'
     });
 
     const compPageSourceInstance = new PageSource(compPage.instance);

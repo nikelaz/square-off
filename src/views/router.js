@@ -1,20 +1,25 @@
 import React from 'react';
 import { createMemoryRouter } from 'react-router-dom';
-import Index from './routes/index.jsx';
+import Code from './routes/code.jsx';
 import Visual from './routes/visual.jsx';
+import Settings from './routes/settings.jsx'
 
 const router = createMemoryRouter([
   {
     path: '/',
-    element: <Index />
+    element: <Code />
   },
   {
     path: '/main_window',
-    element: <Index />
+    element: <Code />
   },
   {
-    path: '/code',
+    path: '/visual',
     element: <Visual />
+  },
+  {
+    path: '/settings',
+    element: <Settings />
   }
 ]);
 

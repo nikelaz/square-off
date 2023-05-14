@@ -1,8 +1,8 @@
 import React from 'react';
 import styles from './progress-bar.module.styl';
 
-const ProgressBar = ({ value }) => (
-  <div className={styles.wrapper}>
+const ProgressBar = ({ value, className }) => (
+  <div className={`${styles.wrapper} ${className}`}>
     <div className={styles.progress} style={{ width: `${value}%` }}>
       <div className={styles.progress_inner_container}>
         {value > 10 ? `${value}%` : <span>&nbsp;</span>}
