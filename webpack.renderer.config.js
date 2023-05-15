@@ -1,4 +1,5 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 const rules = require('./webpack.rules');
 
 module.exports = {
@@ -8,5 +9,6 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin(),
+    new MonacoWebpackPlugin()
   ]
 };

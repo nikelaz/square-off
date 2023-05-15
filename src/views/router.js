@@ -1,8 +1,7 @@
 import React from 'react';
 import { createMemoryRouter } from 'react-router-dom';
 import Code from './routes/code.jsx';
-import Visual from './routes/visual.jsx';
-import Settings from './routes/settings.jsx'
+import Visual from './routes/visual/visual.jsx';
 
 const router = createMemoryRouter([
   {
@@ -11,15 +10,12 @@ const router = createMemoryRouter([
   },
   {
     path: '/main_window',
-    element: <Code />
+    element: <Code />,
+    
   },
   {
     path: '/visual',
     element: <Visual />
-  },
-  {
-    path: '/settings',
-    element: <Settings />
   }
 ]);
 

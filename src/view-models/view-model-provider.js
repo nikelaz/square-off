@@ -4,12 +4,11 @@ const ViewModelContext = createContext(null);
 
 export const ViewModelProvider = ({ children }) => {
   const [progress, setProgress] = useState(0);
-  const [refImage, setRefImage] = useState(null);
-  const [compImage, setCompImage] = useState(null);
-  const [diffImage, setDiffImage] = useState(null);
+  const [images, setImages] = useState(null);
   const [refPageSource, setRefPageSource] = useState('');
   const [compPageSource, setCompPageSource] = useState('');
   const [statusMessage, setStatusMessage] = useState('');
+  const [viewports, setViewports] = useState([]);
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -26,21 +25,19 @@ export const ViewModelProvider = ({ children }) => {
 
   const updateStatusOnReply = (e, args) => {
     if (args.progress) setProgress(args.progress);
-    if (args.refImage) setRefImage(args.refImage);
-    if (args.compImage) setCompImage(args.compImage);
-    if (args.diffImage) setDiffImage(args.diffImage);
+    if (args.images) setImages(args.images);
     if (args.refPageSource) setRefPageSource(args.refPageSource);
     if (args.compPageSource) setCompPageSource(args.compPageSource);
     if (args.statusMessage) setStatusMessage(args.statusMessage);
+    if (args.viewports) setViewports(args.viewports);
   };
 
   const model = {
     progress,
-    refImage,
-    compImage,
-    diffImage,
+    images,
     refPageSource,
     compPageSource,
+    viewports,
     statusMessage,
     submitHandler
   };

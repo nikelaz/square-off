@@ -8,10 +8,27 @@
   align-items: center
 
 .progress
-  transition: .2s width
+  transition: .5s width
   font-size: 0.875rem
   background-color: var(--color-bg-button)
+  position: relative
+  overflow: hidden
+  &:after
+    content: ''
+    position: absolute
+    top: 0
+    left: -400px
+    width: 400px
+    height: 100%
+    background: radial-gradient(circle, alpha(#fff, .2) 0%, transparent 100%)
+    animation: moveLeft 2s forwards infinite
 
 .progress_inner_container
   padding: 0.4rem 0.75rem
   text-align: center
+
+@keyframes moveLeft
+  0%
+    left: -400px
+  100%
+    left: 100%

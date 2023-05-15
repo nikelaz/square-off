@@ -1,10 +1,13 @@
-.top_bar
+.wrapper
+  padding-right: 1.25rem
   border-bottom: 1px solid var(--color-bg-a4)
 
 .navigation
   a
     display: inline-flex
-    padding: 0.75rem 1.25rem
+    align-items: center
+    gap: 0.5rem
+    padding: 0.9rem 1.25rem
     border-right: 1px solid var(--color-bg-a4)
     transition: .2s background-color
     position: relative
@@ -32,5 +35,7 @@
     border-top: 2px solid var(--color-link)
 
   &:after
-    border-bottom: 1px solid var(--color-bg)
-  
+    border-bottom: 2px solid var(--color-bg)
+
+.row__form
+  max-width: 1280px

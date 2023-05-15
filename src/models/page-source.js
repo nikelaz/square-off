@@ -1,6 +1,5 @@
 const fs = require('fs');
 const Page = require('./page');
-// const prettify = require('html-prettify');
 const pretty = require('pretty');
 
 

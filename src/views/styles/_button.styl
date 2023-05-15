@@ -1,5 +1,8 @@
 button,
 .button
+  display: inline-flex
+  align-items: center
+  gap: 0.25rem
   background-color: var(--color-bg-button)
   color: var(--color-fg)
   border: 1px solid var(--color-bg-button)
@@ -8,3 +11,10 @@ button,
   outline: none
   border-radius: 4px
   line-height: 1.5
+  transition: .2s opacity
+  &:hover
+    opacity: 0.9
+  
+.button__sec
+  background-color: var(--color-bg-a4)
+  border: 1px solid var(--color-bg-a6)

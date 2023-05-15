@@ -1,19 +1,36 @@
+const path = require('path');
+const fs = require('fs');
 const { ipcMain } = require('electron');
 const Page = require('../models/page');
 const Screenshot = require('../models/screenshot');
 const VisualDiff = require('../models/visual-diff');
 const PageSource = require('../models/page-source');
 const PNG = require('pngjs').PNG;
-const wait = require('../helpers/wait');
 
 const controllerName = 'ComparisonController';
 
 class ComparisonController {
   constructor() {
-    ipcMain.on(`${controllerName}-compareUrls`, this.compareUrls);
+    ipcMain.on(`${controllerName}-compareUrls`, this.compareUrls.bind(this));
+  }
+
+  async createScreenshot(page, width, height) {
+    const screenshot = new Screenshot(page, width, height);
+    await screenshot.capture();
+
+    const imageBuffer = Buffer.from(screenshot.getBase64(), 'base64');
+    const imagePNG = PNG.sync.read(imageBuffer);
+
+    return {
+      ...screenshot,
+      width: imagePNG.width,
+      height: imagePNG.height
+    }
   }
 
   async compareUrls(event, args) {
+    const settings = JSON.parse(fs.readFileSync(path.resolve('settings.json')));
+    this.viewports = settings.viewports;
     const replyUrl = `${controllerName}-compareUrls-reply`;
     const refPageUrl = args.refPageUrl;
     const compPageUrl = args.compPageUrl;
@@ -23,54 +40,69 @@ class ComparisonController {
     }
 
     event.reply(replyUrl, {
-      progress: 5,
-      statusMessage: 'Loading reference page'
+      progress: 1,
+      viewports: this.viewports,
+      statusMessage: 'Loading reference and comparison pages'
     });
 
     const refPage = new Page();
     await refPage.open(refPageUrl);
-    const refPageHeight = await refPage.instance.evaluate(() => document.documentElement.offsetHeight);
-    refPage.instance.setViewport({ width: 1981, height: refPageHeight });
-
-    event.reply(replyUrl, {
-      progress: 15,
-      statusMessage: 'Creating reference page screenshot'
-    });
-
-    const refScreenshot = new Screenshot(refPage.instance, 1981, refPageHeight);
-    await refScreenshot.capture();
-
-    const refImageBuffer = Buffer.from(refScreenshot.getBase64(), 'base64');
-    const refImagePNG = PNG.sync.read(refImageBuffer);
-
-    event.reply(replyUrl, {
-      progress: 30,
-      refImage: refScreenshot.getBase64(),
-      statusMessage: 'Loading comparison page'
-    });
 
     const compPage = new Page();
     await compPage.open(compPageUrl);
-
+    
     event.reply(replyUrl, {
-      progress: 45,
-      statusMessage: 'Creating comparison page screenshot'
+      progress: 5,
+      viewports: this.viewports,
+      statusMessage: 'Computing reference and comparison page heights'
     });
 
-    const compScreenshot = new Screenshot(compPage.instance, refImagePNG.width, refImagePNG.height);
-    await compScreenshot.capture();
+    const refPageHeights = {};
+
+    for (const viewport of this.viewports) {
+      await refPage.instance.setViewport({ width: viewport, height: 1024 });
+      refPageHeights[viewport] = await refPage.instance.evaluate(() => document.documentElement.offsetHeight);
+    }
+
+    event.reply(replyUrl, {
+      progress: 20,
+      statusMessage: 'Creating screenshots'
+    });
+
+    let images = {};
+    
+    const refScreenshotPromises = this.viewports.map(viewport =>
+      this.createScreenshot(refPageUrl, viewport, refPageHeights[viewport])
+    );
+
+    const compScreenshotPromises = this.viewports.map(viewport => 
+      this.createScreenshot(compPageUrl, viewport, refPageHeights[viewport])
+    );
+
+    const refScreenshots = await Promise.all(refScreenshotPromises);
+    const compScreenshots = await Promise.all(compScreenshotPromises);
 
     event.reply(replyUrl, {
       progress: 60,
-      compImage: compScreenshot.getBase64(),
       statusMessage: 'Computing visual differences'
     });
 
-    const diffImage = new VisualDiff(refScreenshot, compScreenshot);
+    const diffImages = this.viewports.map((viewport, index) =>
+      new VisualDiff(refScreenshots[index], compScreenshots[index])
+    );
+
+    // Organize images in object by viewport
+    this.viewports.forEach((viewport, index) => {
+      images[viewport] = {
+        refImage: refScreenshots[index].base64,
+        compImage: compScreenshots[index].base64,
+        diffImage: diffImages[index].base64
+      };
+    });
 
     event.reply(replyUrl, {
-      progress: 75,
-      diffImage: diffImage.getBase64(),
+      progress: 80,
+      images,
       statusMessage: 'Fetching and beautifying reference page source code'
     });
 
@@ -78,7 +110,7 @@ class ComparisonController {
     const refPageSource = await refPageSourceInstance.getSource();
 
     event.reply(replyUrl, {
-      progress: 80,
+      progress: 90,
       refPageSource,
       statusMessage: 'Fetching and beautifying comparison page source code'
     });

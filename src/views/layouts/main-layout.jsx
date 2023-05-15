@@ -1,10 +1,10 @@
 import React from 'react';
-import TabsBar from '../components/tabs-bar/tabs-bar.jsx';
+import TopBar from '../components/top-bar/top-bar.jsx';
 
 const MainLayout = ({children}) => (
   <>
-    <TabsBar />
-    {children}
+    <TopBar />
+    { children }
   </>
 );
 
