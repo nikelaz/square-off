@@ -61,7 +61,7 @@ class ComparisonController {
 
     for (const viewport of this.viewports) {
       await refPage.instance.setViewport({ width: viewport, height: 1024 });
-      refPageHeights[viewport] = await refPage.instance.evaluate(() => document.documentElement.offsetHeight);
+      refPageHeights[viewport] = await refPage.instance.evaluate(() => document.documentElement.scrollHeight);
     }
 
     event.reply(replyUrl, {
@@ -106,7 +106,7 @@ class ComparisonController {
       statusMessage: 'Fetching and beautifying reference page source code'
     });
 
-    const refPageSourceInstance = new PageSource(refPage.instance);
+    const refPageSourceInstance = new PageSource(refPage);
     const refPageSource = await refPageSourceInstance.getSource();
 
     event.reply(replyUrl, {
@@ -115,7 +115,7 @@ class ComparisonController {
       statusMessage: 'Fetching and beautifying comparison page source code'
     });
 
-    const compPageSourceInstance = new PageSource(compPage.instance);
+    const compPageSourceInstance = new PageSource(compPage);
     const compPageSource = await compPageSourceInstance.getSource();
 
     event.reply(replyUrl, {

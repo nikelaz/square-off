@@ -9,7 +9,7 @@ class PageSource {
   }
 
   async getSource() {
-    this.source = await this.page.content();
+    this.source = await this.page.source;
     this.source = pretty(this.source);
     return this.source;
   }
